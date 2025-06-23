@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSV Encrypt/Decrypt</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="container">
+<div id="drop-area">
+  <label for="csvFile">Archivo CSV</label>
+  <input type="file" id="csvFile" />
+  <span id="csvFileError" class="error-message"></span>
+</div>
+
+
+  <label for="key">Clave (Base64, 32 bytes)</label>
+  <input type="text" id="key" placeholder="Base64 Key" />
+  <span id="keyError" class="error-message"></span>
+
+  <label for="iv">IV (Base64, 16 bytes)</label>
+  <input type="text" id="iv" placeholder="Base64 IV" />
+  <span id="ivError" class="error-message"></span>
+
+  <label for="fields">Campos sensibles (separados por coma)</label>
+  <input type="text" id="fields" placeholder="Ej: email,dni,telefono" />
+  <span id="fieldsError" class="error-message"></span>
+
+  <div class="button-group">
+    <button id="encryptBtn" disabled>🔐 Encriptar</button>
+    <button id="decryptBtn" disabled>🔓 Desencriptar</button>
+    <button id="generateKeyIvBtn" type="button">Generar clave y IV</button>
+  </div>
+
+  <a id="download" style="display:none">Descargar resultado</a>
+</div>
+<div class="demo-banner">
+  Esto es un demo. Si quiere más información, envíe un mensaje a <a href="mailto:info@alosistemas.com">info@alosistemas.com</a>
+</div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
