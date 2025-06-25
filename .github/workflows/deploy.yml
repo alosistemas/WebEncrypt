@@ -35,3 +35,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # El directorio que se publicará. Contiene tu index.html, main.js, y la carpeta pkg/ generada.
           publish_dir: ./frontend
+    permissions:
+      contents: write
