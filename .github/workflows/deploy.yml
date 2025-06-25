@@ -28,18 +28,21 @@ jobs:
       #    - '--out-dir ./frontend/pkg' coloca los archivos compilados dentro de la carpeta 'frontend/pkg',
       #      justo donde tu 'main.js' espera encontrarlos.
       - name: Construir el sitio
+        # Añadimos --verbose para obtener más detalles en caso de error
         run: |
           set -ex
           # Compila el WASM y lo coloca directamente dentro de la carpeta del frontend.
           # Ahora la carpeta 'frontend' contiene el sitio web completo y listo para desplegar.
-          wasm-pack build ./rust-crypto --target web --out-dir ./frontend/pkg
+          wasm-pack build --verbose ./rust-crypto --target web --out-dir ./frontend/pkg
 
-      # Debug: Listar el contenido del directorio 'dist' antes de publicar
-      - name: Listar contenido del frontend
+      # Verificación y depuración: Listar el contenido del directorio 'frontend'
+      # Si este paso falla, significa que la compilación en el paso anterior no generó los archivos esperados.
+      - name: Listar y verificar contenido del frontend
         run: |
+          echo "--- Verificando contenido de ./frontend/pkg ---"
+          ls -l ./frontend/pkg/
+          echo "--- Listando todo el contenido de ./frontend ---"
           ls -R ./frontend
-            ls -l ./frontend/pkg/rust_crypto_bg.wasm
-          ls -l ./frontend/pkg/rust_crypto.js
 
       # 4. Despliega los archivos estáticos a la rama 'gh-pages'
       - name: Desplegar en GitHub Pages
