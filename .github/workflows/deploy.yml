@@ -38,6 +38,8 @@ jobs:
       - name: Listar contenido del frontend
         run: |
           ls -R ./frontend
+            ls -l ./frontend/pkg/rust_crypto_bg.wasm
+          ls -l ./frontend/pkg/rust_crypto.js
 
       # 4. Despliega los archivos estáticos a la rama 'gh-pages'
       - name: Desplegar en GitHub Pages
