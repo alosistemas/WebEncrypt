@@ -1,5 +1,6 @@
 name: Desplegar en GitHub Pages
 
+# Se ejecuta cada vez que haces un push a la rama 'main'
 on:
   push:
     branches:
@@ -7,6 +8,7 @@ on:
 
 jobs:
   build-and-deploy:
+    # Usamos la última versión de Ubuntu para ejecutar el trabajo
     permissions:
       contents: write # Permite a la Action escribir en el repositorio (crear la rama gh-pages)
 
@@ -28,11 +30,16 @@ jobs:
       - name: Compilar WASM
         run: wasm-pack build ./rust-crypto --target web --out-dir ./frontend/pkg
 
-      # 4. Despliega los archivos estáticos a la rama 'gh-pages'
+      # 4. Mover el contenido de 'frontend' a la raíz del directorio de trabajo
+      #    Esto asegura que 'index.html' y 'pkg/' estén en la raíz de 'gh-pages'
+      - name: Mover archivos para despliegue
+        run: mv ./frontend/* .
+
+      # 5. Despliega los archivos estáticos a la rama 'gh-pages'
       - name: Desplegar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           # El token es necesario para permitir que la acción escriba en tu repositorio
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # El directorio que se publicará. Contiene tu index.html, main.js, y la carpeta pkg/ generada.
-          publish_dir: ./frontend
+          publish_dir: . # Ahora publicamos la raíz del repositorio de trabajo
