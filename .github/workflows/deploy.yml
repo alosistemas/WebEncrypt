@@ -7,7 +7,6 @@ on:
 
 jobs:
   build-and-deploy:
-    # Usamos la última versión de Ubuntu para ejecutar el trabajo
     permissions:
       contents: write # Permite a la Action escribir en el repositorio (crear la rama gh-pages)
 
