@@ -27,20 +27,17 @@ jobs:
       #    - '--target web' crea un output compatible con ES Modules
       #    - '--out-dir ./frontend/pkg' coloca los archivos compilados dentro de la carpeta 'frontend/pkg',
       #      justo donde tu 'main.js' espera encontrarlos.
-      - name: Construir artefacto de despliegue
+      - name: Construir el sitio
         run: |
           set -ex
-          # Crea un directorio de distribución limpio
-          mkdir ./dist
-          # Compila el WASM y lo coloca directamente en la carpeta de distribución
-          wasm-pack build ./rust-crypto --target web --out-dir ./dist/pkg
-          # Copia los archivos estáticos del frontend a la carpeta de distribución
-          cp ./frontend/index.html ./frontend/main.js ./frontend/style.css ./dist/
+          # Compila el WASM y lo coloca directamente dentro de la carpeta del frontend.
+          # Ahora la carpeta 'frontend' contiene el sitio web completo y listo para desplegar.
+          wasm-pack build ./rust-crypto --target web --out-dir ./frontend/pkg
 
       # Debug: Listar el contenido del directorio 'dist' antes de publicar
-      - name: Listar contenido de dist
+      - name: Listar contenido del frontend
         run: |
-          ls -R ./dist
+          ls -R ./frontend
 
       # 4. Despliega los archivos estáticos a la rama 'gh-pages'
       - name: Desplegar en GitHub Pages
@@ -48,5 +45,5 @@ jobs:
         with:
           # El token es necesario para permitir que la acción escriba en tu repositorio
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # El directorio que se publicará. Contiene tu index.html, main.js, y la carpeta pkg/ generada.
-          publish_dir: ./dist
+          # Publica directamente el contenido de la carpeta 'frontend'.
+          publish_dir: ./frontend
