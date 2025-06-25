@@ -31,9 +31,10 @@ jobs:
         # Añadimos --verbose para obtener más detalles en caso de error
         run: |
           set -ex
-          # Compila el WASM y lo coloca directamente dentro de la carpeta del frontend.
-          # Ahora la carpeta 'frontend' contiene el sitio web completo y listo para desplegar.
-          wasm-pack build --verbose ./rust-crypto --target web --out-dir ./frontend/pkg
+          # Nos movemos al directorio del crate de Rust para evitar problemas de rutas.
+          cd ./rust-crypto
+          # Compilamos desde dentro del directorio, apuntando el output hacia la carpeta del frontend.
+          wasm-pack build --verbose --target web --out-dir ../frontend/pkg
 
       # Verificación y depuración: Listar el contenido del directorio 'frontend'
       # Si este paso falla, significa que la compilación en el paso anterior no generó los archivos esperados.
