@@ -1,0 +1,14 @@
+# Rust build artifacts
+/target/
+Cargo.lock
+
+# Wasm-pack output directory
+# This directory is generated during the build.
+# The GitHub Action will create it on each deployment.
+# To test locally, run: wasm-pack build ./rust-crypto --target web --out-dir ./frontend/pkg
+/frontend/pkg/
+/rust-crypto/pkg/
+
+# OS and editor files
+.DS_Store
+*.log
