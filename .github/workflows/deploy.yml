@@ -36,6 +36,11 @@ jobs:
           # Copia los archivos estáticos del frontend a la carpeta de distribución
           cp ./frontend/index.html ./frontend/main.js ./frontend/style.css ./dist/
 
+      # Debug: Listar el contenido del directorio 'dist' antes de publicar
+      - name: Listar contenido de dist
+        run: |
+          ls -R ./dist
+
       # 4. Despliega los archivos estáticos a la rama 'gh-pages'
       - name: Desplegar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
