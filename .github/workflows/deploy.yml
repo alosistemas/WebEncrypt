@@ -4,7 +4,7 @@ name: Desplegar en GitHub Pages
 on:
   push:
     branches:
-      - main # O la rama que uses como principal (ej. master)
+      - develop # Ahora se ejecuta en la rama 'develop'
 
 jobs:
   build-and-deploy:
