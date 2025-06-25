@@ -47,3 +47,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Publica directamente el contenido de la carpeta 'frontend'.
           publish_dir: ./frontend
+          # Crea una rama 'gh-pages' limpia en cada despliegue para evitar archivos antiguos.
+          force_orphan: true
