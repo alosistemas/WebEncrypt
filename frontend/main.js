@@ -12,24 +12,46 @@ function readCSVFile() {
 }
 
 async function process(action) {
-  const csv = await readCSVFile();
-  const key = document.getElementById("key").value.trim();
-  const iv = document.getElementById("iv").value.trim();
-  const fields = document.getElementById("fields").value.trim();
+  const encryptBtn = document.getElementById("encryptBtn");
+  const decryptBtn = document.getElementById("decryptBtn");
+  const downloadLink = document.getElementById("download");
+
+  // 1. Deshabilitar botones y mostrar estado de carga para mejor UX
+  encryptBtn.disabled = true;
+  decryptBtn.disabled = true;
+  downloadLink.style.display = "none";
+  const originalBtnText = action === "encrypt" ? encryptBtn.textContent : decryptBtn.textContent;
+  if (action === "encrypt") encryptBtn.textContent = "Encriptando...";
+  if (action === "decrypt") decryptBtn.textContent = "Desencriptando...";
+
+  // 2. Envolver la lógica en un try...catch para manejar errores del WASM
+  try {
+    const csv = await readCSVFile();
+    const key = document.getElementById("key").value.trim();
+    const iv = document.getElementById("iv").value.trim();
+    const fields = document.getElementById("fields").value.trim();
 
     console.log({csv, key, iv, fields});
 
-  const result = action === "encrypt"
-    ? encrypt_csv(csv, key, iv, fields)
-    : decrypt_csv(csv, key, iv, fields);
+    const result = action === "encrypt"
+      ? encrypt_csv(csv, key, iv, fields)
+      : decrypt_csv(csv, key, iv, fields);
 
-  const blob = new Blob([result], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const link = document.getElementById("download");
-  link.href = url;
-  link.download = action + "_output.csv";
-  link.style.display = "block";
-  link.textContent = `Descargar ${action}ed CSV`;
+    const blob = new Blob([result], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = action + "_output.csv";
+    downloadLink.style.display = "block";
+    downloadLink.textContent = `Descargar CSV ${action === 'encrypt' ? 'encriptado' : 'desencriptado'}`;
+  } catch (error) {
+    console.error("Error durante el proceso:", error);
+    alert(`Ocurrió un error: ${error}.\n\nRevisa que la clave, el IV y los datos del CSV sean correctos.`);
+  } finally {
+    // 3. Restaurar los botones siempre, incluso si hay un error
+    if (action === "encrypt") encryptBtn.textContent = originalBtnText;
+    if (action === "decrypt") decryptBtn.textContent = originalBtnText;
+    checkFields(); // Re-evalúa si los botones deben estar habilitados
+  }
 }
 document.getElementById("encryptBtn").addEventListener("click", () => process("encrypt"));
 document.getElementById("decryptBtn").addEventListener("click", () => process("decrypt"));
