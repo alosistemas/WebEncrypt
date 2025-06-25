@@ -29,6 +29,7 @@ jobs:
       #      justo donde tu 'main.js' espera encontrarlos.
       - name: Construir artefacto de despliegue
         run: |
+          set -ex
           # Crea un directorio de distribución limpio
           mkdir ./dist
           # Compila el WASM y lo coloca directamente en la carpeta de distribución
