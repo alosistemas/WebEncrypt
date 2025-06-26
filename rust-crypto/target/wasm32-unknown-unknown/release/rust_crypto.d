@@ -1,0 +1,1 @@
+/Users/jbala/Desktop/PROYECTO\ ALO\ SISTEMAS/csv-aes-wasm/rust-crypto/target/wasm32-unknown-unknown/release/rust_crypto.wasm: /Users/jbala/Desktop/PROYECTO\ ALO\ SISTEMAS/csv-aes-wasm/rust-crypto/src/lib.rs

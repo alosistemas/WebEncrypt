@@ -1,0 +1,40 @@
+name: Desplegar en GitHub Pages
+
+on:
+  # Se ejecuta cada vez que haces un push a la rama 'develop'
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    # Otorga permisos para que la Action pueda escribir en la rama gh-pages
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+
+      - name: Construir el sitio
+        run: |
+          set -ex
+          # Compila el WASM y lo coloca directamente dentro de la carpeta del frontend.
+          # Esto hace que la carpeta 'frontend' contenga el sitio web completo y listo.
+          wasm-pack build ./rust-crypto --target web --out-dir ./frontend/pkg
+
+      - name: Verificar contenido del frontend
+        run: ls -R ./frontend
+
+      - name: Desplegar en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Esta es la línea clave: publica el CONTENIDO de './frontend' a la raíz del sitio.
+          publish_dir: ./frontend
+          # Crea una rama 'gh-pages' limpia en cada despliegue para evitar archivos antiguos.
+          force_orphan: true
